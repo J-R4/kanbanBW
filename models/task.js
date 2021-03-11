@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: {
                         message: `Category cannot be empty`,
                     },
+                    isIn: {
+                        args: [`Backlog`, `Todo`, `Done`, `Completed`],
+                        message: `The input must be either Backlog, Todo, Done, or Completed`,
+                    },
                 },
             },
         },

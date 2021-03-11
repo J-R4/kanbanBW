@@ -94,7 +94,7 @@ class TaskController {
     static patch = async (req, res, next) => {
         try {
             let target = +req.params.id;
-            let data = { status: req.body.status };
+            let data = { category: req.body.category };
             let task = await Task.findByPk(target);
 
             if (!task) {
@@ -108,7 +108,7 @@ class TaskController {
                 where: {
                     id: target,
                 },
-                returning: true, // isi update data setelah di update
+                returning: true,
             });
 
             if (!update[0]) {

@@ -36,8 +36,13 @@ class UserController {
                 },
             });
 
+            let data = {
+                id: theUser.id,
+                email: theUser.email,
+            };
+
             if (theUser && comparePassword(password, theUser.password) === true) {
-                let access_token = generateToken(theUser.id, theUser.email);
+                let access_token = generateToken(data);
 
                 res.status(200).json({ access_token });
             } else {
