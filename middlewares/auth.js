@@ -4,8 +4,13 @@ const { User, Task } = require('../models');
 
 const authenticate = async (req, res, next) => {
     try {
+        if (req.headers.access_token === undefined) {
+            throw {
+                status: 401,
+                message: `Unauthorized`,
+            };
+        }
         let token = verifyToken(req.headers.access_token);
-
         let user = await User.findOne({
             where: { id: token.id, email: token.email },
         });
