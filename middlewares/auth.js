@@ -32,10 +32,15 @@ const authenticate = async (req, res, next) => {
 
 const authorize = async (req, res, next) => {
     try {
-        let target = +req.params.id;
+        let token = verifyToken(req.headers.access_token);
 
-        let task = await Task.findByPk(target);
+        console.log(token, 'ini dari authorize');
 
+        let task = await Task.findOne({
+            where: {
+                UserId: token.id,
+            },
+        });
         if (task) {
             let validUserTask = task.UserId === req.currentUser.id;
 

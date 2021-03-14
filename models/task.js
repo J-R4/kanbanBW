@@ -34,10 +34,6 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: {
                         message: `Category cannot be empty`,
                     },
-                    isIn: {
-                        args: [['Backlog', 'Todo', 'Doing', 'Done']],
-                        message: `The Category only can contain this type of category = Backlog, Todo, Doing, Done`,
-                    },
                 },
             },
         },
