@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: {
                         message: `Title cannot be empty`,
                     },
+                    len: {
+                        args: [1, 40],
+                        message: `Title of your Task can only contain 1 - 40 words only`,
+                    },
                 },
             },
             category: {
@@ -29,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: {
                         message: `Category cannot be empty`,
+                    },
+                    isIn: {
+                        args: [['Backlog', 'Todo', 'Doing', 'Done']],
+                        message: `The Category only can contain this type of category = Backlog, Todo, Doing, Done`,
                     },
                 },
             },

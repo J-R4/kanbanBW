@@ -11,6 +11,7 @@ const authenticate = async (req, res, next) => {
             };
         }
         let token = verifyToken(req.headers.access_token);
+
         let user = await User.findOne({
             where: { id: token.id, email: token.email },
         });
@@ -31,13 +32,10 @@ const authenticate = async (req, res, next) => {
 
 const authorize = async (req, res, next) => {
     try {
-        let token = verifyToken(req.headers.access_token);
+        let target = +req.params.id;
 
-        let task = await Task.findOne({
-            where: {
-                UserId: token.id,
-            },
-        });
+        let task = await Task.findByPk(target);
+
         if (task) {
             let validUserTask = task.UserId === req.currentUser.id;
 

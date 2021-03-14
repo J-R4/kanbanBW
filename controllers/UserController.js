@@ -79,9 +79,9 @@ class UserController {
                 .then((user) => {
                     let payload = { id: user[0].id, email: user[0].email };
                     res.status(200).json({
-                        id: user[0].id,
-                        email: user[0].email,
-                        access_token: generateToken(payload.id, payload.email),
+                        id: payload.id,
+                        email: payload.email,
+                        access_token: generateToken({ id: payload.id, email: payload.email }),
                     });
                 })
                 .catch((err) => {

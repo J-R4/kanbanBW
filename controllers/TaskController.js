@@ -142,7 +142,7 @@ class TaskController {
                     id: target,
                 },
             });
-            res.status(200).json({ begone, message: `Tasks with id ${target} has been deleted` });
+            res.status(200).json({ message: `Tasks with id ${target} has been deleted` });
         } catch (err) {
             next(err);
         }

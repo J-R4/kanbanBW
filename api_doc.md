@@ -2,12 +2,12 @@ ENDPOINT:
 
 1. `POST /login`
 2. `POST /register`
-3. `GET /todos`
-4. `POST /todos`
-5. `GET /todos/:id`
-6. `PUT /todos/:id`
-7. `PATCH /todos/:id`
-8. `DELETE /todos/:id`
+3. `GET /tasks`
+4. `POST /tasks`
+5. `GET /tasks/:id`
+6. `PUT /tasks/:id`
+7. `PATCH /tasks/:id`
+8. `DELETE /tasks/:id`
 9. `POST /oAuth/`
 
 ## 1. `POST /login`
@@ -25,8 +25,8 @@ not needed
 
         ```json
         {
-          "email": "<email>",
-          "password": "<password>"
+          "email": "<email - string>",
+          "password": "<password - string>"
         }
         ```
 
@@ -35,6 +35,14 @@ not needed
 ```json
 {
     "access_token": "<access token>"
+}
+```
+
+    Response (400 - BAD REQUEST) =
+
+```json
+{
+    "access_token": "<email / password is wrong>"
 }
 ```
 
@@ -60,8 +68,8 @@ Request =
 
     ```json
     {
-        "email": "<email>",
-        "password": "<password>"
+        "email": "<email - string>",
+        "password": "<password - string>"
     }
     ```
 
@@ -69,6 +77,7 @@ Response (201 - CREATED) =
 
 ```json
 {
+    "id": "<id by system>",
     "email": "<email by user>"
 }
 ```
@@ -81,11 +90,19 @@ Response (400 - BAD REQUEST) =
 }
 ```
 
-## 3. `GET /todos`
+Response (500 - Internal Server Error)
+
+```json
+{
+    "message": "<internal server Error message>"
+}
+```
+
+## 3. `GET /tasks`
 
 Description =
 
-User can get list of all the todos
+User can get list of all the tasks
 
 Request =
 
@@ -104,13 +121,11 @@ Response (200 - OK) =
 ```json
 {
     "id": "<given id by system>",
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status": "<todos status>",
-    "due_date": "<todos due_date>",
-    "UserId": "<todos association>",
+    "title": "<tasks title>",
+    "category": "<tasks category>",
     "createdAt": "<date by system>",
-    "updatedAt": "<date by system>"
+    "updatedAt": "<date by system>",
+    "UserId": "<tasks association>"
 }
 ```
 
@@ -122,7 +137,15 @@ Response (404 - NOT FOUND) =
 }
 ```
 
-## 4. POST /todos`
+Response (500 - Internal Server Error)
+
+```json
+{
+    "message": "<internal server Error message>"
+}
+```
+
+## 4. POST /tasks`
 
 Description =
 
@@ -139,21 +162,21 @@ Request =
 -   body =
 
     {
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status": "<todos status>",
-    "due_date": "<todos due_date>"
+    "title": "<tasks title - string>",
+    "description": "<tasks description - string>",
     }
 
 Response (201 - CREATED) =
 
 {
-"obj": {
-"title": "<todos title>",
-"description": "<todos description>",
-"status": "<todos status>",
-"due_date": "<todos due_date>"
-}
+  "theData": {
+    "id": "<id>",
+    "title": "<title>",
+    "category": "<category>",
+    "UserId": "<UserId>",
+    "updatedAt": "<date by system>",
+    "createdAt": "<date by system>"
+  }
 }
 
 Response (400 - BAD REQUEST) =
@@ -172,11 +195,11 @@ Response (500 - INTERNAL SERVER ERROR) =
 }
 ```
 
-## 5. `GET /todos/:id`
+## 5. `GET /tasks/:id`
 
 Description =
 
-User can get todos by the id
+User can get tasks by the id (+req.params.id)
 
 Request =
 
@@ -195,13 +218,11 @@ Response (200 - OK ) =
 ```json
 {
     "id": "<given id by system>",
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status": "<todos status>",
-    "due_date": "<todos due_date>",
-    "UserId": "<todos association>",
+    "title": "<tasks title>",
+    "category": "<tasks category>",
     "createdAt": "<date by system>",
-    "updatedAt": "<date by system>"
+    "updatedAt": "<date by system>",
+    "UserId": "<tasks association>"
 }
 ```
 
@@ -213,11 +234,19 @@ Response (404 - NOT FOUND) =
 }
 ```
 
-## 6. `PUT /todos/:id`
+Response (500 - INTERNAL SERVER ERROR) =
+
+```json
+{
+    "message": "<internal server message>"
+}
+```
+
+## 6. `PUT /tasks/:id`
 
 Description =
 
-User can update the todos according to its id
+User can update the tasks according to its id (+req.params.id)
 
 Request =
 
@@ -230,10 +259,8 @@ Request =
 -   body =
 
     {
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status": "<todos status>",
-    "due_date": "<todos due_date>"
+    "title": "<tasks title - string>",
+    "category": "<tasks category - string>",
     }
 
 Response (200 - OK ) =
@@ -241,13 +268,11 @@ Response (200 - OK ) =
 ```json
 {
     "id": "<given id by system>",
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status": "<todos status>",
-    "due_date": "<todos due_date>",
-    "UserId": "<todos association>",
+    "title": "<tasks title>",
+    "category": "<tasks category>",
     "createdAt": "<date by system>",
-    "updatedAt": "<date by system>"
+    "updatedAt": "<date by system>",
+    "UserId": "<tasks association>"
 }
 ```
 
@@ -259,6 +284,14 @@ Response (400 - BAD REQUEST) =
 }
 ```
 
+Response (404 - DATA NOT FOUND) =
+
+```json
+{
+    "message": "data not found message"
+}
+```
+
 Response (500 - INTERNAL ERROR) =
 
 ```json
@@ -267,11 +300,11 @@ Response (500 - INTERNAL ERROR) =
 }
 ```
 
-## 7. `PATCH /todos/:id`
+## 7. `PATCH /tasks/:id`
 
 Description =
 
-User can update the status of todos to become finished / work in progress / unfinished
+User can update the category of tasks to become backlog / todo / doing / done
 
 Request =
 
@@ -283,10 +316,8 @@ Request =
 
 -   body =
 
-(radio button)
-
 {
-"status": "<value of the selection between finished or work in progress or unfinished>"
+"category": "<value of the selection between backlog or todo or doing or done>"
 }
 
 Response (200 - OK) =
@@ -294,13 +325,11 @@ Response (200 - OK) =
 ```json
 {
     "id": "<given id by system>",
-    "title": "<todos title>",
-    "description": "<todos description>",
-    "status": "<todos status depends of the chosen value of the selection>",
-    "due_date": "<todos due_date>",
-    "UserId": "<todos association>",
+    "title": "<tasks title>",
+    "category": "<tasks category>",
     "createdAt": "<date by system>",
-    "updatedAt": "<date by system>"
+    "updatedAt": "<date by system>",
+    "UserId": "<tasks association>"
 }
 ```
 
@@ -328,11 +357,11 @@ Response (500 - INTERNAL ERROR) =
 }
 ```
 
-## 8. `DELETE /todos/:id`
+## 8. `DELETE /tasks/:id`
 
 Description =
 
-User can delete the todos by their selection according to its id
+User can delete the tasks by their selection according to its id
 
 Request =
 
@@ -382,21 +411,20 @@ Request =
     }
 
 -   body =
-    not needed
+
+```json
+{
+    "google_token": "<google_token provided by google - string>"
+}
+```
 
 Response (200 - OK) =
 
 ```json
 {
-    "message": "<delete message>"
-}
-```
-
-Response (404 - NOT FOUND) =
-
-```json
-{
-    "message": "<not found message>"
+    "id": "<id by system>",
+    "email": "<email by user>",
+    "access_token": "<access_token>"
 }
 ```
 
